@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
-import User from "@/models/user.model";
+// import User from "@/models/user.model";
 
 export const getDataFromToken = async (request: NextRequest) => {
     try {
