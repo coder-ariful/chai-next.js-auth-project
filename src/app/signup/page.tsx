@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from 'react';
 
 import axios from 'axios';
-import { toast } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const Signup = () => {
     const router = useRouter()
@@ -27,7 +28,9 @@ const Signup = () => {
             setLoading(true)
             const response = await axios.post('/api/users/signup', user);
             console.log("SignUp Success. ", response.data);
-            router.push('/login')
+            toast.success('Successfully toasted!')
+            setLoading(false)
+            router.push('/verifyToken')
         } catch (error) {
             console.log({ error });
             if (error instanceof Error) {
@@ -47,10 +50,9 @@ const Signup = () => {
         }
     }, [user])
     return (
-        <div>
-            <h1 className='flex flex-col items-center justify-center min-h-screen py-2'>
+        <div className='flex flex-col items-center justify-center min-h-screen py-2'>
+            <form className='flex flex-col w-96 p-6 rounded shadow-md'>
                 <h1 className='mb-5 text-2xl'>{loading ? "Processing" : "Sign UP"}</h1>
-                <hr  />
                 <label htmlFor="username">username</label>
                 <input
                     id='username'
@@ -59,23 +61,35 @@ const Signup = () => {
                     placeholder='username'
                     className='py-2 px-4 border border-gray-300 rounded mb-4 focus:outline-none focus:border-gray-600 '
                     type="text" />
-                <label htmlFor="username">Email</label>
+                <label htmlFor="email">Email</label>
                 <input
                     id='email'
                     value={user.email}
                     onChange={(e) => { setUser({ ...user, email: e.target.value }) }}
                     placeholder='Email'
                     className='py-2 px-4 border border-gray-300 rounded mb-4 focus:outline-none focus:border-gray-600 '
-                    type="text" />
-                <label htmlFor="username">Password</label>
+                    type="email" />
+                <label htmlFor="password">Password</label>
                 <input
                     id='password'
                     value={user.password}
                     onChange={(e) => { setUser({ ...user, password: e.target.value }) }}
-                    placeholder='username'
+                    placeholder='Password'
                     className='py-2 px-4 border border-gray-300 rounded mb-4 focus:outline-none focus:border-gray-600 '
                     type="text" />
-            </h1>
+
+                <button
+                    disabled={buttonDisabled || loading}
+
+                    onClick={() => { toast.success("It worked!") ; onSignup() }}
+                    className={`py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-blue-300 ${loading ? "opacity-50 cursor-not-allowed" : ""} ${buttonDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                    
+                >
+                    Sign Up
+                </button>
+            </form>
+            <p className='mt-4 text-gray-600'>Already have an account? <Link href="/login" className='text-blue-600 hover:underline'>Login</Link></p>
+            
         </div>
     );
 };
