@@ -30,6 +30,7 @@ export const GET = async (request: NextRequest) => {
 
         return NextResponse.json({
             message: "User Founded",
+            data : user,
             success: true,
             error: false
         })
